@@ -6,12 +6,9 @@ import com.api.userCrud.models.userModel;
 import com.api.userCrud.repositories.userRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
-import net.bytebuddy.asm.Advice.Return;
 
 @Service
 public class userService {
@@ -22,8 +19,34 @@ public class userService {
         return (ArrayList<userModel>) user_repository.findAll();
     }
 
-    public userModel postUsers(userModel newUser){
+    public userModel postUser(userModel newUser){
         return user_repository.save(newUser);
+    }
+
+    public userModel putUser(userModel updateUser){
+
+        var findUserName = user_repository.findByuserName(updateUser.getUserName());
+        var findUserId = user_repository.findAll();
+
+
+        if(findUserId != null){
+
+            if(findUserName == null){
+                //Actualiza si no se repite el nombre de usuario
+                return user_repository.save(updateUser);
+            }
+            else if(findUserName.getId() == updateUser.getId()){
+                //Actualiza si el nombre de usuario corresponde por me dio ids
+                return user_repository.save(updateUser);
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+
     }
 
     public boolean deleteUser(Integer id){

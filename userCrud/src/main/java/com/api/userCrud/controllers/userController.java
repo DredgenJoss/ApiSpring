@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +27,21 @@ public class userController {
     }
 
     @PostMapping()
-    public userModel postUsers(@RequestBody userModel newUser){
-        return this.user_service.postUsers(newUser);
+    public userModel postUser(@RequestBody userModel newUser){
+        return this.user_service.postUser(newUser);
+    }
+
+    @PutMapping()
+    public userModel putUser(@RequestBody userModel updateUser){
+        var response = this.user_service.putUser(updateUser);
+
+        if(response != null){
+            return response;
+        }
+        else{
+            return null;
+        }
+        
     }
 
     @DeleteMapping(path = "/{id}")
